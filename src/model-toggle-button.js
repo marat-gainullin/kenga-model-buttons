@@ -1,11 +1,8 @@
-define([
-    'core/extend',
-    '../buttons/toggle-button',
-    'ui/bound'], function (
-        extend,
-        ToggleButton,
-        Bound) {
-    function ModelToggleButton(text, icon, selected, iconTextGap, onActionPerformed) {
+import ToggleButton from '../buttons/toggle-button';
+import Bound from 'ui/bound';
+
+class ModelToggleButton extends ToggleButton {
+    constructor(text, icon, selected, iconTextGap, onActionPerformed) {
         if (arguments.length < 4)
             iconTextGap = 4;
         if (arguments.length < 3)
@@ -14,10 +11,10 @@ define([
             icon = null;
         if (arguments.length < 1)
             text = '';
-        
-        ToggleButton.call(this, text, icon, selected, iconTextGap, onActionPerformed);
+
+        super(text, icon, selected, iconTextGap, onActionPerformed);
         Bound.call(this);
     }
-    extend(ModelToggleButton, ToggleButton);
-    return ModelToggleButton;
-});
+}
+
+export default ModelToggleButton;

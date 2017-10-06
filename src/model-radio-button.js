@@ -1,19 +1,16 @@
-define([
-    'core/extend',
-    '../buttons/radio-button',
-    'ui/bound'], function (
-        extend,
-        RadioButton,
-        Bound) {
-    function ModelRadioButton(text, selected, onActionPerformed) {
+import RadioButton from '../buttons/radio-button';
+import Bound from 'ui/bound';
+
+class ModelRadioButton extends RadioButton {
+    constructor(text, selected, onActionPerformed) {
         if (arguments.length < 2)
             selected = null;
         if (arguments.length < 1)
             text = '';
-        
-        RadioButton.call(this, text, selected, onActionPerformed);
+
+        super(text, selected, onActionPerformed);
         Bound.call(this);
     }
-    extend(ModelRadioButton, RadioButton);
-    return ModelRadioButton;
-});
+}
+
+export default ModelRadioButton;
