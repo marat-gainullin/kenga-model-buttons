@@ -1,14 +1,14 @@
 /* global expect */
-/* global NaN */
-import 'node_modules/kenga-buttons/layout.css';
-import 'node_modules/kenga-buttons/theme.css';
+/* global NaN, Promise */
+import '../src/layout.css';
+import '../src/theme.css';
 
 import Id from 'septima-utils/id';
 import Invoke from 'septima-utils/invoke';
 import Model from 'septima-model/model';
 import Entity from 'septima-model/entity';
 import Color from 'kenga/color';
-import ModelCheckBox from '../src/model-check-button';
+import ModelCheckBox from '../src/model-check-box';
 import ModelRadioButton from '../src/model-radio-button';
 import ModelToggleButton from '../src/model-toggle-button';
 
@@ -17,7 +17,7 @@ describe('Model buttons Api', () => {
     const house1 = {name: 'Angelville'};
     const house2 = {name: 'Enville'};
 
-    function fill(entity, Id, Color) {
+    function fill(entity) {
         entity.push(
                 {id: Id.generate(), name: 'Joe', legs: 2, hungry: false, birth: new Date(), color: new Color('#fcfcfc'), house: house1},
                 {id: Id.generate(), name: 'Jane', legs: 2, hungry: false, birth: new Date(), color: new Color('#fafafa'), house: house1},
@@ -30,7 +30,7 @@ describe('Model buttons Api', () => {
         expect(entity.cursor).toBe(entity[6]);
     }
 
-    function expectPathReverseBinding(Model, Entity, Id, Color, instance, propertyName) {
+    function expectPathReverseBinding(instance, propertyName) {
         const model = new Model();
         const entity = new Entity();
         model.addEntity(entity);
@@ -75,7 +75,7 @@ describe('Model buttons Api', () => {
         expect(instance.value).toBeNull();
     }
 
-    function expectPlainReverseBinding(Model, Entity, Id, Color, instance, propertyName) {
+    function expectPlainReverseBinding(instance, propertyName) {
         const model = new Model();
         const entity = new Entity();
         model.addEntity(entity);
@@ -103,7 +103,7 @@ describe('Model buttons Api', () => {
         expect(instance.value).toBe(entity[6][propertyName]);
     }
 
-    function expectPathForwardBinding(Model, Entity, Id, Color, instance, Invoke, propertyName, done) {
+    function expectPathForwardBinding(instance, propertyName) {
         const model = new Model();
         const entity = new Entity();
         model.addEntity(entity);
@@ -127,13 +127,15 @@ describe('Model buttons Api', () => {
             instance.value = house2;
         else
             throw `Unknown property '${propertyName}'`;
-        Invoke.later(() => {
-            expect(entity[6][propertyName]).toBe(instance.value);
-            done();
+        return new Promise((resolve) => {
+            Invoke.later(() => {
+                expect(entity[6][propertyName]).toBe(instance.value);
+                resolve();
+            });
         });
     }
 
-    function expectPlainForwardBinding(Model, Entity, Id, Color, instance, Invoke, propertyName, done) {
+    function expectPlainForwardBinding(instance, propertyName) {
         const model = new Model();
         const entity = new Entity();
         model.addEntity(entity);
@@ -157,46 +159,51 @@ describe('Model buttons Api', () => {
             instance.value = house2;
         else
             throw `Unknown property '${propertyName}'`;
-        Invoke.later(() => {
-            expect(entity[6][propertyName]).toBe(instance.value);
-            done();
+        return new Promise((resolve) => {
+            Invoke.later(() => {
+                expect(entity[6][propertyName]).toBe(instance.value);
+                resolve();
+            });
         });
     }
 
     it('ModelCheckBox.Structure', done => {
         const properyName = 'hungry';
 
-        expectPathReverseBinding(Model, Entity, Id, Color, new ModelCheckBox(), properyName);
-        expectPlainReverseBinding(Model, Entity, Id, Color, new ModelCheckBox(), properyName);
+        expectPathReverseBinding(new ModelCheckBox(), properyName);
+        expectPlainReverseBinding(new ModelCheckBox(), properyName);
 
-        expectPathForwardBinding(Model, Entity, Id, Color, new ModelCheckBox(), Invoke, properyName, () => {
-            expectPlainForwardBinding(Model, Entity, Id, Color, new ModelCheckBox(), Invoke, properyName, () => {
-                done();
-            });
-        });
+        expectPathForwardBinding(new ModelCheckBox(), properyName)
+                .then(() => {
+                    return expectPlainForwardBinding(new ModelCheckBox(), properyName);
+                })
+                .then(done)
+                .catch(done.fail);
     });
     it('ModelRadioButton.Structure', done => {
         const properyName = 'hungry';
 
-        expectPathReverseBinding(Model, Entity, Id, Color, new ModelRadioButton(), properyName);
-        expectPlainReverseBinding(Model, Entity, Id, Color, new ModelRadioButton(), properyName);
+        expectPathReverseBinding(new ModelRadioButton(), properyName);
+        expectPlainReverseBinding(new ModelRadioButton(), properyName);
 
-        expectPathForwardBinding(Model, Entity, Id, Color, new ModelRadioButton(), Invoke, properyName, () => {
-            expectPlainForwardBinding(Model, Entity, Id, Color, new ModelRadioButton(), Invoke, properyName, () => {
-                done();
-            });
-        });
+        expectPathForwardBinding(new ModelRadioButton(), properyName)
+                .then(() => {
+                    return expectPlainForwardBinding(new ModelRadioButton(), properyName);
+                })
+                .then(done)
+                .catch(done.fail);
     });
     it('ModelToggleButton.Structure', done => {
         const properyName = 'hungry';
 
-        expectPathReverseBinding(Model, Entity, Id, Color, new ModelToggleButton(), properyName);
-        expectPlainReverseBinding(Model, Entity, Id, Color, new ModelToggleButton(), properyName);
+        expectPathReverseBinding(new ModelToggleButton(), properyName);
+        expectPlainReverseBinding(new ModelToggleButton(), properyName);
 
-        expectPathForwardBinding(Model, Entity, Id, Color, new ModelToggleButton(), Invoke, properyName, () => {
-            expectPlainForwardBinding(Model, Entity, Id, Color, new ModelToggleButton(), Invoke, properyName, () => {
-                done();
-            });
-        });
+        expectPathForwardBinding(new ModelToggleButton(), properyName)
+                .then(() => {
+                    return expectPlainForwardBinding(new ModelToggleButton(), properyName);
+                })
+                .then(done)
+                .catch(done.fail);
     });
 });

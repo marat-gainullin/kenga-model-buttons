@@ -1,6 +1,6 @@
 {
   "name": "kenga-model-buttons",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Kenga bindable buttons.",
   "main": "index.js",
   "repository": "https://github.com/marat-gainullin/kenga-model-buttons.git",
@@ -35,9 +35,15 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "septima-model": "^0.0.3",
+    "septima-utils": "^0.0.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0",
     "yargs": "^9.0.1"
+  },
+  "dependencies": {
+    "kenga": "^0.0.9",
+    "kenga-buttons": "^0.0.5"
   }
 }
