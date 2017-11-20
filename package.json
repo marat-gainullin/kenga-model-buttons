@@ -1,6 +1,6 @@
 {
   "name": "kenga-model-buttons",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Kenga bindable buttons.",
   "main": "index.js",
   "repository": "https://github.com/marat-gainullin/kenga-model-buttons.git",
