@@ -1,4 +1,4 @@
-# kenga-model-buttons
+# Kenga model buttons
 Kenga bindable buttons.
 
 ## Install
