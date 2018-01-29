@@ -19,98 +19,153 @@ describe('Model buttons Api', () => {
 
     function fill(entity) {
         entity.push(
-                {id: Id.generate(), name: 'Joe', legs: 2, hungry: false, birth: new Date(), color: new Color('#fcfcfc'), house: house1},
-                {id: Id.generate(), name: 'Jane', legs: 2, hungry: false, birth: new Date(), color: new Color('#fafafa'), house: house1},
-                {id: Id.generate(), name: 'Nick', legs: 2, hungry: false, birth: new Date(), color: new Color('#fbfbfb'), house: house1},
-                {id: Id.generate(), name: 'Jack', legs: 2, hungry: false, birth: new Date(), color: new Color('#acacac'), house: house1},
-                {id: Id.generate(), name: 'Gala', legs: 2, hungry: false, birth: new Date(), color: new Color('#aaaaaa'), house: house1},
-                {id: Id.generate(), name: 'Nikolai', legs: 2, hungry: false, birth: new Date(), color: new Color('#ababab'), house: house1},
-                {id: Id.generate(), name: 'Shusha', legs: 4, hungry: false, birth: new Date(), color: new Color('#acacac'), house: house1}
+            {
+                id: Id.next(),
+                name: 'Joe',
+                legs: 2,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#fcfcfc'),
+                house: house1
+            },
+            {
+                id: Id.next(),
+                name: 'Jane',
+                legs: 2,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#fafafa'),
+                house: house1
+            },
+            {
+                id: Id.next(),
+                name: 'Nick',
+                legs: 2,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#fbfbfb'),
+                house: house1
+            },
+            {
+                id: Id.next(),
+                name: 'Jack',
+                legs: 2,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#acacac'),
+                house: house1
+            },
+            {
+                id: Id.next(),
+                name: 'Gala',
+                legs: 2,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#aaaaaa'),
+                house: house1
+            },
+            {
+                id: Id.next(),
+                name: 'Nikolai',
+                legs: 2,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#ababab'),
+                house: house1
+            },
+            {
+                id: Id.next(),
+                name: 'Shusha',
+                legs: 4,
+                hungry: false,
+                birth: new Date(),
+                color: new Color('#acacac'),
+                house: house1
+            }
         );
         expect(entity.cursor).toBe(entity[6]);
     }
 
     function expectPathReverseBinding(instance, propertyName) {
         const model = new Model();
-        const entity = new Entity();
-        model.addEntity(entity);
-        fill(entity, Id, Color);
-
+        const entity = new Entity(model, 'dummy', 'dummy_id');
+        const entityData = entity.wrapData([]);
+        fill(entityData, Id, Color);
         expect(instance.value).toBeNull();
-        instance.data = entity;
+        instance.data = entityData;
         instance.field = `cursor.${propertyName}`;
 
         if (propertyName === 'name')
-            entity[6][propertyName] += ' 1';
+            entityData[6][propertyName] += ' 1';
         else if (propertyName === 'legs')
-            entity[6][propertyName] += 1;
+            entityData[6][propertyName] += 1;
         else if (propertyName === 'birth')
-            entity[6][propertyName] = new Date();
+            entityData[6][propertyName] = new Date();
         else if (propertyName === 'hungry')
-            entity[6][propertyName] = !entity[6][propertyName];
+            entityData[6][propertyName] = !entityData[6][propertyName];
         else if (propertyName === 'color')
-            entity[6][propertyName] = new Color('#0c0c0c');
+            entityData[6][propertyName] = new Color('#0c0c0c');
         else if (propertyName === 'house')
-            entity[6][propertyName] = house2;
+            entityData[6][propertyName] = house2;
         else
             throw `Unknown property '${propertyName}'`;
-        expect(instance.value).toBe(entity[6][propertyName]);
+        expect(instance.value).toBe(entityData[6][propertyName]);
 
-        entity.cursor = entity[0];
-        expect(instance.value).toBe(entity[0][propertyName]);
+        entityData.cursor = entityData[0];
+        expect(instance.value).toBe(entityData[0][propertyName]);
 
-        entity.cursor = entity[5];
-        expect(instance.value).toBe(entity[5][propertyName]);
+        entityData.cursor = entityData[5];
+        expect(instance.value).toBe(entityData[5][propertyName]);
 
-        entity.cursor = entity[6];
-        expect(instance.value).toBe(entity[6][propertyName]);
+        entityData.cursor = entityData[6];
+        expect(instance.value).toBe(entityData[6][propertyName]);
 
-        entity.cursor = null;
+        entityData.cursor = null;
         expect(instance.value).toBeNull();
 
-        entity.cursor = entity[2];
-        expect(instance.value).toBe(entity[2][propertyName]);
+        entityData.cursor = entityData[2];
+        expect(instance.value).toBe(entityData[2][propertyName]);
 
-        entity.cursor = undefined;
+        entityData.cursor = undefined;
         expect(instance.value).toBeNull();
     }
 
     function expectPlainReverseBinding(instance, propertyName) {
         const model = new Model();
-        const entity = new Entity();
-        model.addEntity(entity);
-        fill(entity, Id, Color);
+        const entity = new Entity(model, 'dummy', 'dummy_id');
+        const entityData = entity.wrapData([]);
+        fill(entityData, Id, Color);
 
         expect(instance.value).toBeNull();
-        instance.data = entity.cursor;
+        instance.data = entityData.cursor;
         instance.field = propertyName;
 
-        expect(entity.cursor).toBe(entity[6]);
+        expect(entityData.cursor).toBe(entityData[6]);
         if (propertyName === 'name')
-            entity[6][propertyName] += ' 1';
+            entityData[6][propertyName] += ' 1';
         else if (propertyName === 'legs')
-            entity[6][propertyName] += 1;
+            entityData[6][propertyName] += 1;
         else if (propertyName === 'birth')
-            entity[6][propertyName] = new Date();
+            entityData[6][propertyName] = new Date();
         else if (propertyName === 'hungry')
-            entity[6][propertyName] = !entity[6][propertyName];
+            entityData[6][propertyName] = !entityData[6][propertyName];
         else if (propertyName === 'color')
-            entity[6][propertyName] = new Color('#0c0c0c');
+            entityData[6][propertyName] = new Color('#0c0c0c');
         else if (propertyName === 'house')
-            entity[6][propertyName] = house2;
+            entityData[6][propertyName] = house2;
         else
             throw `Unknown property '${propertyName}'`;
-        expect(instance.value).toBe(entity[6][propertyName]);
+        expect(instance.value).toBe(entityData[6][propertyName]);
     }
 
     function expectPathForwardBinding(instance, propertyName) {
         const model = new Model();
-        const entity = new Entity();
-        model.addEntity(entity);
-        fill(entity, Id, Color);
+        const entity = new Entity(model, 'dummy', 'dummy_id');
+        const entityData = entity.wrapData([]);
+        fill(entityData, Id, Color);
 
         expect(instance.value).toBeNull();
-        instance.data = entity;
+        instance.data = entityData;
         instance.field = `cursor.${propertyName}`;
 
         if (propertyName === 'name')
@@ -129,7 +184,7 @@ describe('Model buttons Api', () => {
             throw `Unknown property '${propertyName}'`;
         return new Promise((resolve) => {
             Invoke.later(() => {
-                expect(entity[6][propertyName]).toBe(instance.value);
+                expect(entityData[6][propertyName]).toBe(instance.value);
                 resolve();
             });
         });
@@ -137,12 +192,12 @@ describe('Model buttons Api', () => {
 
     function expectPlainForwardBinding(instance, propertyName) {
         const model = new Model();
-        const entity = new Entity();
-        model.addEntity(entity);
-        fill(entity, Id, Color);
+        const entity = new Entity(model, 'dummy', 'dummy_id');
+        const entityData = entity.wrapData([]);
+        fill(entityData, Id, Color);
 
         expect(instance.value).toBeNull();
-        instance.data = entity.cursor;
+        instance.data = entityData.cursor;
         instance.field = propertyName;
 
         if (propertyName === 'name')
@@ -161,7 +216,7 @@ describe('Model buttons Api', () => {
             throw `Unknown property '${propertyName}'`;
         return new Promise((resolve) => {
             Invoke.later(() => {
-                expect(entity[6][propertyName]).toBe(instance.value);
+                expect(entityData[6][propertyName]).toBe(instance.value);
                 resolve();
             });
         });
@@ -169,41 +224,38 @@ describe('Model buttons Api', () => {
 
     it('ModelCheckBox.Structure', done => {
         const properyName = 'hungry';
-
         expectPathReverseBinding(new ModelCheckBox(), properyName);
         expectPlainReverseBinding(new ModelCheckBox(), properyName);
 
         expectPathForwardBinding(new ModelCheckBox(), properyName)
-                .then(() => {
-                    return expectPlainForwardBinding(new ModelCheckBox(), properyName);
-                })
-                .then(done)
-                .catch(done.fail);
+            .then(() => {
+                return expectPlainForwardBinding(new ModelCheckBox(), properyName);
+            })
+            .then(done)
+            .catch(done.fail);
     });
     it('ModelRadioButton.Structure', done => {
         const properyName = 'hungry';
-
         expectPathReverseBinding(new ModelRadioButton(), properyName);
         expectPlainReverseBinding(new ModelRadioButton(), properyName);
 
         expectPathForwardBinding(new ModelRadioButton(), properyName)
-                .then(() => {
-                    return expectPlainForwardBinding(new ModelRadioButton(), properyName);
-                })
-                .then(done)
-                .catch(done.fail);
+            .then(() => {
+                return expectPlainForwardBinding(new ModelRadioButton(), properyName);
+            })
+            .then(done)
+            .catch(done.fail);
     });
     it('ModelToggleButton.Structure', done => {
         const properyName = 'hungry';
-
         expectPathReverseBinding(new ModelToggleButton(), properyName);
         expectPlainReverseBinding(new ModelToggleButton(), properyName);
 
         expectPathForwardBinding(new ModelToggleButton(), properyName)
-                .then(() => {
-                    return expectPlainForwardBinding(new ModelToggleButton(), properyName);
-                })
-                .then(done)
-                .catch(done.fail);
+            .then(() => {
+                return expectPlainForwardBinding(new ModelToggleButton(), properyName);
+            })
+            .then(done)
+            .catch(done.fail);
     });
 });
