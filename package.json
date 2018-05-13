@@ -43,7 +43,7 @@
     "yargs": "^9.0.1"
   },
   "dependencies": {
-    "kenga": "0.0.32",
-    "kenga-buttons": "0.0.21"
+    "kenga": "0.0.36",
+    "kenga-buttons": "0.0.22"
   }
 }
