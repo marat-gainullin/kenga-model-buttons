@@ -1,6 +1,6 @@
 {
   "name": "kenga-model-buttons",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Kenga bindable buttons.",
   "repository": "https://github.com/marat-gainullin/kenga-model-buttons.git",
   "author": "marat-gainullin <mg@altsoft.biz>",
@@ -11,8 +11,8 @@
     "lib": "rollup -c rollup.lib.config.js"
   },
   "dependencies": {
-    "kenga": "0.0.47",
-    "kenga-buttons": "0.0.32"
+    "kenga": "0.0.48",
+    "kenga-buttons": "0.0.33"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
