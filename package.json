@@ -1,6 +1,6 @@
 {
   "name": "kenga-model-buttons",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Kenga bindable buttons.",
   "repository": "https://github.com/marat-gainullin/kenga-model-buttons.git",
   "author": "marat-gainullin <mg@altsoft.biz>",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "kenga": "0.0.53",
-    "kenga-buttons": "0.0.39"
+    "kenga-buttons": "0.0.40"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
